@@ -1,0 +1,1 @@
+from .words import get_all_words
