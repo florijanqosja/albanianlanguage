@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='albanianlanguage',
-    version='0.1.3',
+    version='0.1.4',
     packages=find_packages(),
     install_requires=[
         # none so fas
