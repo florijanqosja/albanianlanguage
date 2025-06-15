@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   auto-release:
     runs-on: ubuntu-latest
@@ -34,64 +39,44 @@ jobs:
         echo "Current version: $CURRENT_VERSION"
         echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
     
-    - name: Determine new version
-      id: new_version
+    - name: Check if release already exists
+      id: check_release
       run: |
-        CURRENT=${{ steps.current_version.outputs.current_version }}
-        IFS='.' read -ra VERSION_PARTS <<< "$CURRENT"
-        MAJOR=${VERSION_PARTS[0]}
-        MINOR=${VERSION_PARTS[1]}
-        PATCH=${VERSION_PARTS[2]}
-        
-        # Increment patch version
-        PATCH=$((PATCH + 1))
-        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-        echo "New version: $NEW_VERSION"
-        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-    
-    - name: Update version in code
-      run: |
-        NEW_VERSION=${{ steps.new_version.outputs.new_version }}
-        sed -i "s/__version__ = \"[0-9]*\.[0-9]*\.[0-9]*\"/__version__ = \"$NEW_VERSION\"/" albanianlanguage/__version__.py
+        VERSION=${{ steps.current_version.outputs.current_version }}
+        if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+          echo "Release v$VERSION already exists, skipping..."
+          echo "should_skip=true" >> $GITHUB_OUTPUT
+        else
+          echo "Release v$VERSION does not exist, proceeding..."
+          echo "should_skip=false" >> $GITHUB_OUTPUT
+        fi
     
     - name: Run tests
+      if: steps.check_release.outputs.should_skip == 'false'
       run: |
         pip install -e .
         pip install -r requirements-dev.txt
         pytest
     
-    - name: Commit version update
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add albanianlanguage/__version__.py
-        git commit -m "Bump version to ${{ steps.new_version.outputs.new_version }} [no-release]"
-    
-    - name: Create Tag
-      run: |
-        git tag v${{ steps.new_version.outputs.new_version }}
-    
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: main
-        tags: true
-    
     - name: Create Release
+      if: steps.check_release.outputs.should_skip == 'false'
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ steps.new_version.outputs.new_version }}
-        release_name: Release v${{ steps.new_version.outputs.new_version }}
+        tag_name: v${{ steps.current_version.outputs.current_version }}
+        release_name: Release v${{ steps.current_version.outputs.current_version }}
         body: |
-          Automated release v${{ steps.new_version.outputs.new_version }}
+          Release v${{ steps.current_version.outputs.current_version }}
+          
+          Changes in this release:
+          - ${{ github.event.head_commit.message }}
         draft: false
         prerelease: false
     
     - name: Build and publish
+      if: steps.check_release.outputs.should_skip == 'false'
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
