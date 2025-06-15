@@ -13,7 +13,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 setup(
     name="albanianlanguage",
     version=version_contents["__version__"],
-    packages=find_packages(include=["albanianlanguage", "albanianlanguage.*"]),
+    packages=find_packages(),
     install_requires=[],
     author="Florijan Qosja",
     author_email="florijanqosja@gmail.com",
@@ -29,12 +29,11 @@ setup(
     package_data={"albanianlanguage": ["data/*.csv"]},
     include_package_data=True,
     python_requires=">=3.8",
+    license="MIT",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: MIT License",
-        "Natural Language :: Albanian",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
@@ -43,6 +42,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Text Processing :: Linguistic",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords="albanian, nlp, language-processing, linguistics",
 )
