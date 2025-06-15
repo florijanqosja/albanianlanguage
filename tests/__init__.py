@@ -1,1 +1,1 @@
-"""Test package for Albanian Language.""" 
+"""Test package for Albanian Language."""
