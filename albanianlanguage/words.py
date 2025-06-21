@@ -56,9 +56,9 @@ def get_all_words(
                 word = row.get("word", "")
 
                 # Apply filters if specified
-                if (starts_with and not word.startswith(starts_with)) or (
-                    includes and includes not in word
-                ):
+                if (starts_with and not word.lower().startswith(starts_with.lower())) or (
+                    includes and includes.lower() not in word.lower()
+                )::
                     continue
 
                 # Skip duplicate words

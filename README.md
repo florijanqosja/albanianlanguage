@@ -103,7 +103,7 @@ Contributions are welcome! Check out the [Contributing Guidelines](CONTRIBUTING.
 
 If you encounter any issues or have questions, please [file an issue](https://github.com/florijanqosja/albanianlanguage/issues).
 
-## 💖 Support the Project
+## 🚀 Support the Project
 
 If you find this project helpful, please consider supporting its development:
 
