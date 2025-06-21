@@ -103,13 +103,11 @@ Contributions are welcome! Check out the [Contributing Guidelines](CONTRIBUTING.
 
 If you encounter any issues or have questions, please [file an issue](https://github.com/florijanqosja/albanianlanguage/issues).
 
-## 💖 Support the Project
+## 🚀 Support the Project
 
 If you find this project helpful, please consider supporting its development:
 
 [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa)](https://github.com/sponsors/florijanqosja)
-[![Ko-fi](https://img.shields.io/badge/Support-Ko--fi-FF5E5B)](https://ko-fi.com/albanian_language)
-[![Buy Me A Coffee](https://img.shields.io/badge/Support-Buy%20Me%20A%20Coffee-yellow)](https://www.buymeacoffee.com/albanianlanguage)
 
 ## 📜 License
 
